@@ -18,12 +18,12 @@ template <typename Dtype>
 DataLayer<Dtype>::DataLayer(const LayerParameter& param)
   : BasePrefetchingDataLayer<Dtype>(param),
     reader_(param) {
-}
+}//构造函数
 
 template <typename Dtype>
 DataLayer<Dtype>::~DataLayer() {
   this->StopInternalThread();
-}
+}//析构函数
 
 template <typename Dtype>
 void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
