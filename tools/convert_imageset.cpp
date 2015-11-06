@@ -86,8 +86,8 @@ int main(int argc, char** argv) {
   if (encode_type.size() && !encoded)
     LOG(INFO) << "encode_type specified, assuming encoded=true.";
 
-  int resize_height = std::max<int>(0, FLAGS_resize_height);
-  int resize_width = std::max<int>(0, FLAGS_resize_width);
+  int resize_height = std::max<int>(0, FLAGS_resize_height);//resize height
+  int resize_width = std::max<int>(0, FLAGS_resize_width);//resize width
 
   // Create new DB
   scoped_ptr<db::DB> db(db::GetDB(FLAGS_backend));
