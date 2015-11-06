@@ -14,9 +14,9 @@
 #include <utility>
 #include <vector>
 
-#include "boost/scoped_ptr.hpp"
-#include "gflags/gflags.h"
-#include "glog/logging.h"
+#include "boost/scoped_ptr.hpp"//intelligent point
+#include "gflags/gflags.h"//google arguments parser
+#include "glog/logging.h"//google log file
 
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/db.hpp"
@@ -26,7 +26,7 @@
 using namespace caffe;  // NOLINT(build/namespaces)
 using std::pair;
 using boost::scoped_ptr;
-
+/*arguments type defination*/
 DEFINE_bool(gray, false,
     "When this option is on, treat images as grayscale ones");
 DEFINE_bool(shuffle, false,
@@ -43,9 +43,9 @@ DEFINE_string(encode_type, "",
     "Optional: What type should we encode the image as ('png','jpg',...).");
 
 int main(int argc, char** argv) {
-  ::google::InitGoogleLogging(argv[0]);
+  ::google::InitGoogleLogging(argv[0]);//initial google log file
   // Print output to stderr (while still logging)
-  FLAGS_alsologtostderr = 1;
+  FLAGS_alsologtostderr = 1;//true: output to the stderr
 
 #ifndef GFLAGS_GFLAGS_H_
   namespace gflags = google;
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
         "    convert_imageset [FLAGS] ROOTFOLDER/ LISTFILE DB_NAME\n"
         "The ImageNet dataset for the training demo is at\n"
         "    http://www.image-net.org/download-images\n");
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
+  gflags::ParseCommandLineFlags(&argc, &argv, true);//parse arguments
 
   if (argc < 4) {
     gflags::ShowUsageWithFlagsRestrict(argv[0], "tools/convert_imageset");
