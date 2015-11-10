@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
   std::vector<std::pair<std::string, int> > lines;
   std::string filename;
   int label;
-  while (infile >> filename >> label) {
+  while (infile >> filename >> label) {//load list
     lines.push_back(std::make_pair(filename, label));
   }
   if (FLAGS_shuffle) {
@@ -90,9 +90,9 @@ int main(int argc, char** argv) {
   int resize_width = std::max<int>(0, FLAGS_resize_width);//resize width
 
   // Create new DB
-  scoped_ptr<db::DB> db(db::GetDB(FLAGS_backend));
-  db->Open(argv[3], db::NEW);
-  scoped_ptr<db::Transaction> txn(db->NewTransaction());
+  scoped_ptr<db::DB> db(db::GetDB(FLAGS_backend));//LMDB or LEVELDB  db namespace
+  db->Open(argv[3], db::NEW);//open the DB file
+  scoped_ptr<db::Transaction> txn(db->NewTransaction());//Transaction type
 
   // Storing to db
   std::string root_folder(argv[1]);
@@ -105,19 +105,19 @@ int main(int argc, char** argv) {
 
   for (int line_id = 0; line_id < lines.size(); ++line_id) {
     bool status;
-    std::string enc = encode_type;
+    std::string enc = encode_type;//jpg
     if (encoded && !enc.size()) {
       // Guess the encoding type from the file name
       string fn = lines[line_id].first;
-      size_t p = fn.rfind('.');
-      if ( p == fn.npos )
+      size_t p = fn.rfind('.');//reverse direction find
+      if ( p == fn.npos )//not match string
         LOG(WARNING) << "Failed to guess the encoding of '" << fn << "'";
-      enc = fn.substr(p);
-      std::transform(enc.begin(), enc.end(), enc.begin(), ::tolower);
+      enc = fn.substr(p);//sub string
+      std::transform(enc.begin(), enc.end(), enc.begin(), ::tolower);//turn letters lowercase
     }
     status = ReadImageToDatum(root_folder + lines[line_id].first,
         lines[line_id].second, resize_height, resize_width, is_color,
-        enc, &datum);
+        enc, &datum);//read image to Datum by opencv
     if (status == false) continue;
     if (check_size) {
       if (!data_size_initialized) {
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
       } else {
         const std::string& data = datum.data();
         CHECK_EQ(data.size(), data_size) << "Incorrect data field size "
-            << data.size();
+            << data.size();//check data size
       }
     }
     // sequential
