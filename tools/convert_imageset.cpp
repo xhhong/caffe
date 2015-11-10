@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
     // Put in db
     string out;
     CHECK(datum.SerializeToString(&out));
-    txn->Put(string(key_cstr, length), out);
+    txn->Put(string(key_cstr, length), out);//write to db
 
     if (++count % 1000 == 0) {
       // Commit db
