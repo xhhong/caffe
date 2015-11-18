@@ -30,13 +30,15 @@ void read_image(std::ifstream* image_file, std::ifstream* label_file,
   label_file->read(label, 1);
 }
 
-void convert_dataset(const char* image_filename, const char* label_filename,
+void convert_dataset(const char* image_filename, const char* label_filename, const char* list_filename,
         const char* db_filename) {
   // Open files
   std::ifstream image_file(image_filename, std::ios::in | std::ios::binary);
   std::ifstream label_file(label_filename, std::ios::in | std::ios::binary);
+  std::ifstream list_file(list_filename, std::ios::in);
   CHECK(image_file) << "Unable to open file " << image_filename;
   CHECK(label_file) << "Unable to open file " << label_filename;
+  CHECK(list_file) << "Unables to open file " << list_filename;
   // Read the magic and the meta data
   uint32_t magic;
   uint32_t num_items;
@@ -76,6 +78,7 @@ void convert_dataset(const char* image_filename, const char* label_filename,
   const int kMaxKeyLength = 10;
   char key[kMaxKeyLength];
   std::string value;
+  std::string s1,s2,c1,c2;
 
   caffe::Datum datum;
   datum.set_channels(2);  // one channel for each image in the pair
@@ -84,8 +87,11 @@ void convert_dataset(const char* image_filename, const char* label_filename,
   LOG(INFO) << "A total of " << num_items << " items.";
   LOG(INFO) << "Rows: " << rows << " Cols: " << cols;
   for (int itemid = 0; itemid < num_items; ++itemid) {
-    int i = caffe::caffe_rng_rand() % num_items;  // pick a random  pair
-    int j = caffe::caffe_rng_rand() % num_items;
+    list_file>>s1>>s2>>c1>>c2;
+    //int i = caffe::caffe_rng_rand() % num_items;  // pick a random  pair
+    //int j = caffe::caffe_rng_rand() % num_items;
+    int i = atoi(s1.c_str);
+    int j = atoi(s2.c_ste);
     read_image(&image_file, &label_file, i, rows, cols,
         pixels, &label_i);
     read_image(&image_file, &label_file, j, rows, cols,
@@ -106,7 +112,7 @@ void convert_dataset(const char* image_filename, const char* label_filename,
 }
 
 int main(int argc, char** argv) {
-  if (argc != 4) {
+  if (argc != 5) {
     printf("This script converts the MNIST dataset to the leveldb format used\n"
            "by caffe to train a siamese network.\n"
            "Usage:\n"
@@ -117,7 +123,7 @@ int main(int argc, char** argv) {
            "You should gunzip them after downloading.\n");
   } else {
     google::InitGoogleLogging(argv[0]);
-    convert_dataset(argv[1], argv[2], argv[3]);
+    convert_dataset(argv[1], argv[2], argv[3], argv[4]);
   }
   return 0;
 }
