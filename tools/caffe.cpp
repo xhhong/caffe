@@ -193,7 +193,7 @@ int train() {
         GetRequestedAction(FLAGS_sighup_effect));
 
   shared_ptr<caffe::Solver<float> >
-    solver(caffe::GetSolver<float>(solver_param));
+    solver(caffe::GetSolver<float>(solver_param));//initial
 
   solver->SetActionFunction(signal_handler.GetActionFunction());
 
@@ -209,7 +209,7 @@ int train() {
     sync.run(gpus);
   } else {
     LOG(INFO) << "Starting Optimization";
-    solver->Solve();
+    solver->Solve();//starting solve
   }
   LOG(INFO) << "Optimization Done.";
   return 0;
