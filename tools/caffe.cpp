@@ -386,7 +386,7 @@ int main(int argc, char** argv) {
       "  device_query    show GPU diagnostic information\n"
       "  time            benchmark model execution time");
   // Run tool or show usage.
-  caffe::GlobalInit(&argc, &argv);//parse the arguments and global initial
+  caffe::GlobalInit(&argc, &argv);//parse the arguments and global initial, defined in #include<common.h>
   if (argc == 2) {
 #ifdef WITH_PYTHON_LAYER//With python tools
     try {
