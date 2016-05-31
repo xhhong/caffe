@@ -386,12 +386,12 @@ int main(int argc, char** argv) {
       "  device_query    show GPU diagnostic information\n"
       "  time            benchmark model execution time");
   // Run tool or show usage.
-  caffe::GlobalInit(&argc, &argv);
+  caffe::GlobalInit(&argc, &argv);//parse the arguments and global initial
   if (argc == 2) {
-#ifdef WITH_PYTHON_LAYER
+#ifdef WITH_PYTHON_LAYER//With python tools
     try {
 #endif
-      return GetBrewFunction(caffe::string(argv[1]))();
+      return GetBrewFunction(caffe::string(argv[1]))();//fit model function
 #ifdef WITH_PYTHON_LAYER
     } catch (bp::error_already_set) {
       PyErr_Print();
@@ -399,6 +399,6 @@ int main(int argc, char** argv) {
     }
 #endif
   } else {
-    gflags::ShowUsageWithFlagsRestrict(argv[0], "tools/caffe");
+    gflags::ShowUsageWithFlagsRestrict(argv[0], "tools/caffe");//Print Usage message with flag
   }
 }
