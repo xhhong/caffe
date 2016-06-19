@@ -29,7 +29,7 @@ namespace caffe {
  * @brief Type of a function that returns a Solver Action enumeration.
  */
 typedef boost::function<SolverAction::Enum()> ActionCallback;
-
+//ActionCallback 可以接受返回值为SolverAction::Enum类型，无参数的函数地址
 /**
  * @brief An interface for classes that perform optimization on Net%s.
  *
